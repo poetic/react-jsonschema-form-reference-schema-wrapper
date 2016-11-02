@@ -1,0 +1,26 @@
+{
+  "name": "react-jsonschema-form-reference-schema-wrapper",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\"",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/poetic/react-jsonschema-form-reference-schema-wrapper.git"
+  },
+  "keywords": [
+    "react-jsonschema-form",
+    "reference"
+  ],
+  "author": "Chun Yang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/poetic/react-jsonschema-form-reference-schema-wrapper/issues"
+  },
+  "homepage": "https://github.com/poetic/react-jsonschema-form-reference-schema-wrapper#readme",
+  "devDependencies": {
+    "semantic-release": "^4.3.5"
+  }
+}
