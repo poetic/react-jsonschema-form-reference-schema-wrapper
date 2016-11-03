@@ -79,12 +79,12 @@ var ReferenceWidget = function (_React$Component) {
     };
     _this.search = '';
 
-    // get initial for selectize
-    if (_this.props.value) {
-      _this.handleSearchChange(_this.props.value, function (docs) {
+    // get initial value for selectize
+    if (props.value) {
+      _this.handleSearchChange(props.value, function (docs) {
         var selectedValue = _lodash2.default.find(docs.map(function (doc) {
           return _this.docToOption(doc);
-        }), { value: _this.props.value });
+        }), { value: props.value });
         _this.setState({ selectedValue: selectedValue });
       });
     } else {
@@ -110,12 +110,14 @@ var ReferenceWidget = function (_React$Component) {
 
       var _props$options = this.props.options,
           findRefs = _props$options.findRefs,
-          $ref = _props$options.$ref;
+          $ref = _props$options.$ref,
+          remoteKey = _props$options.remoteKey;
 
 
       findRefs({
         $ref: $ref,
         searchTerm: searchTerm,
+        remoteKey: remoteKey,
         callback: function callback(docs) {
           _this2.setState({ docs: docs });
           _callback && _callback(docs);

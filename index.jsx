@@ -40,12 +40,12 @@ class ReferenceWidget extends React.Component {
     }
     this.search = ''
 
-    // get initial for selectize
-    if (this.props.value) {
-      this.handleSearchChange(this.props.value, (docs) => {
+    // get initial value for selectize
+    if (props.value) {
+      this.handleSearchChange(props.value, (docs) => {
         const selectedValue = _.find(
           docs.map((doc) => this.docToOption(doc)),
-          {value: this.props.value}
+          {value: props.value}
         )
         this.setState({ selectedValue })
       })
@@ -63,12 +63,13 @@ class ReferenceWidget extends React.Component {
   }
 
   handleSearchChange(searchTerm, callback) {
-    const { findRefs, $ref } = this.props.options
+    const { findRefs, $ref, remoteKey } = this.props.options
 
     findRefs(
       {
         $ref,
         searchTerm,
+        remoteKey,
         callback: (docs) => {
           this.setState({ docs })
           callback && callback(docs)
