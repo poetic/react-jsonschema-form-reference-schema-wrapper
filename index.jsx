@@ -10,7 +10,7 @@ function addReferenceSchema(uiSchema={}, referenceSchema, findRefs, stringifyRef
   const uiSchemaCopy = _.cloneDeep(uiSchema)
 
   traverse(referenceSchema).forEach(function(value) {
-    if (value && typeof value.belongsTo === 'string') {
+    if (value && typeof value['$ref'] === 'string') {
       _.set(
         uiSchemaCopy,
         this.path.join('.'),
@@ -44,7 +44,7 @@ class ReferenceWidget extends React.Component {
     if (this.props.value) {
       this.handleSearchChange(this.props.value, (docs) => {
         const selectedValue = _.find(
-          docs.map(docToOption),
+          docs.map((doc) => this.docToOption(doc)),
           {value: this.props.value}
         )
         this.setState({ selectedValue })
@@ -55,18 +55,19 @@ class ReferenceWidget extends React.Component {
   }
 
   docToOption(doc) {
+    const { options: { remoteKey } } = this.props
     return {
-      label: doc._id,
-      value: doc._id,
+      label: doc[remoteKey],
+      value: doc[remoteKey],
     }
   }
 
   handleSearchChange(searchTerm, callback) {
-    const { findRefs, belongsTo } = this.props.options
+    const { findRefs, $ref } = this.props.options
 
     findRefs(
       {
-        schemaName: belongsTo,
+        $ref,
         searchTerm,
         callback: (docs) => {
           this.setState({ docs })
@@ -79,14 +80,14 @@ class ReferenceWidget extends React.Component {
   handleValueChange(selectedValue) {
     this.setState({selectedValue})
 
-    // !REFERENCE_BSON!${metaData} for referenceWrapper to consume
-    const { onChange, options: { controls, stringifyReferenceData } } = this.props
+    // !REFERENCE_BSON!${metaValue} for referenceWrapper to consume
+    const { onChange, options: { dependents, stringifyReferenceData } } = this.props
     const value = _.get(selectedValue, 'value') || ''
 
-    const selectedDoc = _.find(this.state.docs, { _id: value }) || {}
+    const selectedDoc = _.find(this.state.docs, { [this.props.options.remoteKey]: value }) || {}
     const metaValue = {
       value,
-      controls: controls.map(
+      dependents: dependents.map(
         ({ key, remoteKey }) => ({ key, value: selectedDoc[remoteKey] })
       )
     }
@@ -95,16 +96,11 @@ class ReferenceWidget extends React.Component {
   }
 
   render() {
-    const {
-      value,
-      options: { belongsTo, controls }
-    } = this.props
-
     return <SimpleSelect
       onSearchChange={(search) => this.handleSearchChange(search)}
       filterOptions={(options) => options}
       style={{ width: '100%' }}
-      options={this.state.docs.map(this.docToOption)}
+      options={this.state.docs.map((doc) => this.docToOption(doc))}
       value={this.state.selectedValue}
       onValueChange={(selectedValue) => this.handleValueChange(selectedValue)}
     />
@@ -120,8 +116,8 @@ class ReferenceSchemaForm extends React.Component {
       if (typeof value === 'string') {
         const referenceObj = parseReferenceData(value)
         if (referenceObj) {
-          const { controls, value } = referenceObj
-          controls && controls.forEach(({ key, value }) => {
+          const { dependents, value } = referenceObj
+          dependents && dependents.forEach(({ key, value }) => {
             changes.push({
               path: this.parent.path.concat(key).join('.'),
               value
