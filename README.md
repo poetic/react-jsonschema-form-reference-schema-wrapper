@@ -10,3 +10,9 @@
 [semantic-release-url]:    https://github.com/semantic-release/semantic-release
 [coverall-image]:          https://img.shields.io/coveralls/poetic/react-jsonschema-form-reference-schema-wrapper.svg
 [coverall-url]:            https://coveralls.io/github/poetic/react-jsonschema-form-reference-schema-wrapper
+
+## Development
+Run this command to compile index.jsx to index.js:
+```
+babel --plugins transform-react-jsx index.jsx
+```

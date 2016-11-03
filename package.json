@@ -22,5 +22,11 @@
   "homepage": "https://github.com/poetic/react-jsonschema-form-reference-schema-wrapper#readme",
   "devDependencies": {
     "semantic-release": "^4.3.5"
+  },
+  "dependencies": {
+    "lodash": "^4.15.0",
+    "react": "^15.3.2",
+    "react-selectize": "^2.0.3",
+    "traverse": "^0.6.6"
   }
 }
