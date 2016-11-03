@@ -120,7 +120,7 @@ class ReferenceSchemaForm extends React.Component {
           const { dependents, value } = referenceObj
           dependents && dependents.forEach(({ key, value }) => {
             changes.push({
-              path: this.parent.path.concat(key).join('.'),
+              path: this.parent.path.concat(key),
               value
             })
           })

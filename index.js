@@ -207,7 +207,7 @@ var ReferenceSchemaForm = function (_React$Component2) {
                   value = _ref2.value;
 
               changes.push({
-                path: _this5.parent.path.concat(key).join('.'),
+                path: _this5.parent.path.concat(key),
                 value: value
               });
             });
