@@ -13,7 +13,7 @@ function addReferenceSchema(uiSchema={}, referenceSchema, findRefs, stringifyRef
     if (value && typeof value['$ref'] === 'string') {
       _.set(
         uiSchemaCopy,
-        this.path.join('.'),
+        this.path,
         {
           'ui:widget': {
             component: 'reference',
