@@ -15,14 +15,12 @@ function addReferenceSchema(uiSchema={}, referenceSchema, findRefs, stringifyRef
         uiSchemaCopy,
         this.path,
         {
-          'ui:widget': {
-            component: 'reference',
-            options: {
-              findRefs,
-              stringifyReferenceData,
-              ...value
-            },
-          },
+          'ui:widget': 'reference',
+          'ui:options': {
+            findRefs,
+            stringifyReferenceData,
+            ...value
+          }
         }
       )
     }
