@@ -51,13 +51,11 @@ function addReferenceSchema() {
   (0, _traverse2.default)(referenceSchema).forEach(function (value) {
     if (value && typeof value['$ref'] === 'string') {
       _lodash2.default.set(uiSchemaCopy, this.path, {
-        'ui:widget': {
-          component: 'reference',
-          options: _extends({
-            findRefs: findRefs,
-            stringifyReferenceData: stringifyReferenceData
-          }, value)
-        }
+        'ui:widget': 'reference',
+        'ui:options': _extends({
+          findRefs: findRefs,
+          stringifyReferenceData: stringifyReferenceData
+        }, value)
       });
     }
   });
