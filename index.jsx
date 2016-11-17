@@ -52,7 +52,7 @@ class ReferenceWidget extends React.Component {
         }
       })
     } else {
-      this.handleSearchChange()
+      this.handleSearchChange({})
     }
   }
 
