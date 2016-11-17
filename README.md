@@ -34,12 +34,19 @@
     remoteLabelKey: 'name'
     dependents: [
       { key: 'domainName', remoteKey: 'name' },
+    ],
+    filters: [
+      { key: 'active', value: 'true' },
+      // The following is not implemented yet, we may need a serious refactor
+      // to make all those thing work, consider using context in the
+      // jsonschemaform
+      { key: 'businessGroupId', valueAbsoluteKey: 'businessGroupId' },
     ]
   }
   ```
 
 ## Development
-Build index.js file before release
+Build index.js file before using on local
 ```
 npm run build
 ```

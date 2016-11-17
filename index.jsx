@@ -76,13 +76,30 @@ class ReferenceWidget extends React.Component {
     }
   }
 
+  reduceFilters(filters) {
+    return (filters || []).reduce((acc, filter) => {
+      const { key } = filter
+      const { formData } = this.props
+      if (typeof filter.value !== 'undefined') {
+        acc[key] = filter.value
+      }      return acc
+    }, {})
+  }
+
   handleSearchChange({searchTerm, searchKey, callback}) {
-    const { findRefs, $ref, remoteLabelKey, remoteKey } = this.props.options
+    const {
+      findRefs,
+      $ref,
+      remoteLabelKey,
+      remoteKey,
+      filters
+    } = this.props.options
 
     findRefs(
       {
         $ref,
         searchTerm,
+        filters: this.reduceFilters(filters),
         remoteKey: searchKey || remoteLabelKey || remoteKey,
         callback: (docs) => {
           this.setState({ docs })
