@@ -40,12 +40,16 @@ class ReferenceWidget extends React.Component {
 
     // get initial value for selectize
     if (props.value) {
-      this.handleSearchChange(props.value, (docs) => {
-        const selectedValue = _.find(
-          docs.map((doc) => this.docToOption(doc)),
-          {value: props.value}
-        )
-        this.setState({ selectedValue })
+      this.handleSearchChange({
+        searchKey: props.options.remoteKey,
+        searchTerm: props.value,
+        callback: (docs) => {
+          const selectedValue = _.find(
+            docs.map((doc) => this.docToOption(doc)),
+            {value: props.value}
+          )
+          this.setState({ selectedValue })
+        }
       })
     } else {
       this.handleSearchChange()
@@ -53,21 +57,21 @@ class ReferenceWidget extends React.Component {
   }
 
   docToOption(doc) {
-    const { options: { remoteKey } } = this.props
+    const { options: { remoteKey, remoteLabelKey } } = this.props
     return {
-      label: doc[remoteKey],
+      label: doc[remoteLabelKey || remoteKey],
       value: doc[remoteKey],
     }
   }
 
-  handleSearchChange(searchTerm, callback) {
-    const { findRefs, $ref, remoteKey } = this.props.options
+  handleSearchChange({searchTerm, searchKey, callback}) {
+    const { findRefs, $ref, remoteLabelKey, remoteKey } = this.props.options
 
     findRefs(
       {
         $ref,
         searchTerm,
-        remoteKey,
+        remoteKey: searchKey || remoteLabelKey || remoteKey,
         callback: (docs) => {
           this.setState({ docs })
           callback && callback(docs)
@@ -86,7 +90,7 @@ class ReferenceWidget extends React.Component {
     const selectedDoc = _.find(this.state.docs, { [this.props.options.remoteKey]: value }) || {}
     const metaValue = {
       value,
-      dependents: dependents.map(
+      dependents: (dependents || []).map(
         ({ key, remoteKey }) => ({ key, value: selectedDoc[remoteKey] })
       )
     }
@@ -96,7 +100,7 @@ class ReferenceWidget extends React.Component {
 
   render() {
     return <SimpleSelect
-      onSearchChange={(search) => this.handleSearchChange(search)}
+      onSearchChange={(searchTerm) => this.handleSearchChange({searchTerm})}
       filterOptions={(options) => options}
       style={{ width: '100%' }}
       options={this.state.docs.map((doc) => this.docToOption(doc))}

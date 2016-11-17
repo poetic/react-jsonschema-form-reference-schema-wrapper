@@ -1,3 +1,5 @@
+# react-jsonschema-form-reference-schema-wrapper
+
 [![travis][travis-image]][travis-url]
 [![npm][npm-image]][npm-url]
 [![semantic-release][semantic-release-image]][semantic-release-url]
@@ -8,6 +10,33 @@
 [npm-url]:                 https://npmjs.org/package/react-jsonschema-form-reference-schema-wrapper
 [semantic-release-image]:  https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-release-url]:    https://github.com/semantic-release/semantic-release
+
+## Usage
+- Wrap JSON schema form with this function:
+  ```
+  import Form from 'react-jsonschema-form';
+  const WrappedForm = referenceSchemaWrapper(
+    Form,
+    {
+      findRefs,
+      parse: EJSON.parse,
+      stringify: EJSON.stringify,
+    }
+  )
+  ```
+
+- specify options in referenceSchema which should be passed into the form as
+  a prop along with your schema
+  ```
+  domainId: {
+    $ref: 'domains',
+    remoteKey: '_id',
+    remoteLabelKey: 'name'
+    dependents: [
+      { key: 'domainName', remoteKey: 'name' },
+    ]
+  }
+  ```
 
 ## Development
 Build index.js file before release
