@@ -36,9 +36,20 @@ class ReferenceWidget extends React.Component {
       docs: [],
       selectedValue: null,
     }
-    this.search = ''
+  }
 
-    // get initial value for selectize
+  componentWillMount() {
+    this.updateStateFromProp(this.props)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.value !== nextProps.value) {
+      this.updateStateFromProp(nextProps)
+    }
+  }
+
+  updateStateFromProp(props) {
+    // get value from props for selectize
     if (props.value) {
       this.handleSearchChange({
         searchKey: props.options.remoteKey,
@@ -53,6 +64,7 @@ class ReferenceWidget extends React.Component {
       })
     } else {
       this.handleSearchChange({})
+      this.setState({ selectedValue: null })
     }
   }
 
