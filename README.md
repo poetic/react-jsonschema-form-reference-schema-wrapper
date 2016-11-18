@@ -28,20 +28,36 @@
 - specify options in referenceSchema which should be passed into the form as
   a prop along with your schema
   ```
-  domainId: {
-    $ref: 'domains',
-    remoteKey: '_id',
-    remoteLabelKey: 'name'
-    dependents: [
-      { key: 'domainName', remoteKey: 'name' },
-    ],
-    filters: [
-      { key: 'active', value: 'true' },
-      // The following is not implemented yet, we may need a serious refactor
-      // to make all those thing work, consider using context in the
-      // jsonschemaform
-      { key: 'businessGroupId', valueAbsoluteKey: 'businessGroupId' },
-    ]
+  {
+    "domainId": {
+      "$ref": "domains",
+      "remoteKey": "_id",
+      "remoteLabelKey": "name",
+      "dependents": [
+        { "key": "domainName", "remoteKey": "name" }
+      ],
+      "filters": [
+        { "key": "active", "value": true },
+        { "key": "businessGroupId", "valueAbsoluteKey": "businessGroupId" }
+      ]
+    }
+  }
+  ```
+
+- another example:
+  ```
+  {
+    "code": {
+      "$ref": "persondb.refData(type:addressType)",
+      "remoteKey": "_id",
+      "remoteLabelKey": "code",
+      "dependents": [
+        { "key": "domainName", "remoteKey": "name" }
+      ],
+      "filters": [
+        { "key": "active", "value": true }
+      ]
+    }
   }
   ```
 
