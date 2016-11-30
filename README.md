@@ -37,24 +37,6 @@
         { "key": "domainName", "remoteKey": "name" }
       ],
       "filters": [
-        { "key": "active", "value": true },
-        { "key": "businessGroupId", "valueAbsoluteKey": "businessGroupId" }
-      ]
-    }
-  }
-  ```
-
-- another example:
-  ```
-  {
-    "code": {
-      "$ref": "persondb.refData(type:addressType)",
-      "remoteKey": "_id",
-      "remoteLabelKey": "code",
-      "dependents": [
-        { "key": "domainName", "remoteKey": "name" }
-      ],
-      "filters": [
         { "key": "active", "value": true }
       ]
     }
