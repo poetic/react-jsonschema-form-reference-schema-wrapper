@@ -33,6 +33,7 @@
     "react": "^15.3.2",
     "react-addons-css-transition-group": "^15.3.2",
     "react-addons-shallow-compare": "^15.3.2",
+    "react-bsonschema-form": "^0.41.9",
     "react-dom": "^15.3.2",
     "react-selectize": "^2.0.3",
     "traverse": "^0.6.6"

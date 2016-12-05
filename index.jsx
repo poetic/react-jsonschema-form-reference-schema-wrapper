@@ -3,6 +3,7 @@ import React from 'react'
 import traverse from'traverse'
 import 'react-selectize/themes/index.css'
 import { SimpleSelect } from 'react-selectize'
+import BaseInput from 'react-bsonschema-form/lib/components/widgets/BaseInput';
 
 // NOTE: use a custom ObjectSchemaField is a better solution
 // NOTE: move this to uiSchema, maybe not, because this is not documented in uiSchema
@@ -128,6 +129,12 @@ class ReferenceWidget extends React.Component {
   }
 
   render() {
+    if (this.props.readonly || this.props.disabled) {
+      return <BaseInput
+        {..._.pick(this.props, 'id', 'disabled', 'readonly')}
+        value={_.get(this.state.selectedValue, 'label')}
+      />
+    }
     return <SimpleSelect
       onSearchChange={(searchTerm) => this.handleSearchChange({searchTerm})}
       filterOptions={(options) => options}
