@@ -90,6 +90,29 @@ class ReferenceWidget extends React.Component {
     }, {})
   }
 
+  getFiltersFromSubscriptions() {
+    const stepId = _.get(this.props.formContext, 'currentStep');
+    const curFormPath = this
+      .props
+      .id
+      .replace(/^root_/, '')
+      .replace(/_/g, '.');
+    const curWorkflowPath = `${stepId}.${curFormPath}`
+
+    const filters = _.get(this.props, 'formContext.subscriptionsData', [])
+      .filter(({ absolutePath, type }) => {
+        return type === 'FILTER' && absolutePath === curWorkflowPath
+      })
+      .reduce((filters, {value, doc, filterByPubField, filterByOwnField}) => {
+        const filterValue = filterByPubField
+          ? _.get(doc, filterByPubField)
+          : value;
+        return Object.assign({ [filterByOwnField]: filterValue }, filters)
+      }, {})
+
+    return filters;
+  }
+
   handleSearchChange({searchTerm, searchKey, callback}) {
     const {
       findRefs,
@@ -103,7 +126,7 @@ class ReferenceWidget extends React.Component {
       {
         $ref,
         searchTerm,
-        filters: this.reduceFilters(filters),
+        filters: Object.assign({}, this.reduceFilters(filters), this.getFiltersFromSubscriptions()),
         remoteKey: searchKey || remoteLabelKey || remoteKey,
         callback: (docs) => {
           this.setState({ docs })
