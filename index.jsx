@@ -15,14 +15,17 @@ function addReferenceSchema(uiSchema={}, referenceSchema, findRefs, stringifyRef
       _.set(
         uiSchemaCopy,
         this.path,
-        {
-          'ui:widget': 'reference',
-          'ui:options': {
-            findRefs,
-            stringifyReferenceData,
-            ...value
-          }
-        }
+        Object.assign(
+          {
+            'ui:widget': 'reference',
+            'ui:options': {
+              findRefs,
+              stringifyReferenceData,
+              ...value
+            }
+          },
+          _.get(uiSchemaCopy, this.path)
+        )
       )
     }
   })
@@ -131,7 +134,7 @@ class ReferenceWidget extends React.Component {
   render() {
     if (this.props.readonly || this.props.disabled) {
       return <BaseInput
-        {..._.pick(this.props, 'id', 'disabled', 'readonly')}
+        {..._.pick(this.props, ['id', 'disabled', 'readonly'])}
         value={_.get(this.state.selectedValue, 'label')}
       />
     }
