@@ -109,7 +109,6 @@ class ReferenceWidget extends React.Component {
           : value;
         return Object.assign({ [filterByOwnField]: filterValue }, filters)
       }, {})
-
     return filters;
   }
 
