@@ -48,3 +48,4 @@ Build index.js file before using on local
 ```
 npm run build
 ```
+
