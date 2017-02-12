@@ -52,6 +52,14 @@ class ReferenceWidget extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const oldSubsData = prevProps.formContext.subscriptionsData;
+    const newSubsData = this.props.formContext.subscriptionsData;
+    if (oldSubsData !== newSubsData) {
+      this.updateStateFromProp(this.props);
+    }
+  }
+
   updateStateFromProp(props) {
     // get value from props for selectize
     if (props.value) {
