@@ -43,6 +43,10 @@
   }
   ```
 
+- Supports creating a subscription for object properties in an array with the
+  following notation:
+  `businessGroup.[].code`
+
 ## Development
 Build index.js file before using on local
 ```
