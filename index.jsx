@@ -17,7 +17,7 @@ function addReferenceSchema(uiSchema={}, referenceSchema, findRefs, stringifyRef
         this.path,
         Object.assign(
           {
-            'ui:widget': 'reference',
+            'ui:widget': 'referenceLegacy',
             'ui:options': {
               findRefs,
               stringifyReferenceData,
@@ -59,24 +59,12 @@ class ReferenceWidget extends React.Component {
         searchKey: props.options.remoteKey,
         searchTerm: props.value,
         callback: (docs) => {
-          const selectedValue = _.find(
-            docs.map((doc) => this.docToOption(doc)),
-            {value: props.value}
-          )
-          this.setState({ selectedValue })
+          this.setState({ selectedValue: docs[0] })
         }
       })
     } else {
       this.handleSearchChange({})
       this.setState({ selectedValue: null })
-    }
-  }
-
-  docToOption(doc) {
-    const { options: { remoteKey, remoteLabelKey } } = this.props
-    return {
-      label: doc[remoteLabelKey || remoteKey],
-      value: doc[remoteKey],
     }
   }
 
@@ -126,7 +114,9 @@ class ReferenceWidget extends React.Component {
         $ref,
         searchTerm,
         filters: Object.assign({}, this.reduceFilters(filters), this.getFiltersFromSubscriptions()),
-        remoteKey: searchKey || remoteLabelKey || remoteKey,
+        searchKey: searchKey || remoteLabelKey || remoteKey,
+        valueKey: remoteKey,
+        labelKey: remoteLabelKey || remoteKey,
         callback: (docs) => {
           this.setState({ docs })
           callback && callback(docs)
@@ -164,7 +154,7 @@ class ReferenceWidget extends React.Component {
       onSearchChange={(searchTerm) => this.handleSearchChange({searchTerm})}
       filterOptions={(options) => options}
       style={{ width: '100%' }}
-      options={this.state.docs.map((doc) => this.docToOption(doc))}
+      options={this.state.docs}
       value={this.state.selectedValue}
       onValueChange={(selectedValue) => this.handleValueChange(selectedValue)}
     />
@@ -219,7 +209,7 @@ class ReferenceSchemaForm extends React.Component {
     )
 
     return <Form
-      widgets={{ reference: ReferenceWidget, ...widgets }}
+      widgets={{ referenceLegacy: ReferenceWidget, ...widgets }}
       uiSchema={extendedUiSchema}
       onChange={(event) => this.handleOnChange(event)}
       {...other}
