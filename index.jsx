@@ -86,6 +86,15 @@ class ReferenceWidget extends React.Component {
     }, {})
   }
 
+  resolveArrayForPath(absolutePath, currentWorkflowPath) {
+    if (!absolutePath.includes('[]')) { return absolutePath }
+    const absolutePathParts = absolutePath.split('.')
+    const currentWorkflowPathParts = currentWorkflowPath.split('.')
+    const arrayIndex = _.findIndex(absolutePathParts, (part) => part === '[]')
+    absolutePathParts[arrayIndex] = currentWorkflowPathParts[arrayIndex]
+    return absolutePathParts.join('.')
+  }
+
   getFiltersFromSubscriptions() {
     const stepId = _.get(this.props.formContext, 'currentStep');
     const curFormPath = this
@@ -97,7 +106,8 @@ class ReferenceWidget extends React.Component {
 
     const filters = _.get(this.props, 'formContext.subscriptionsData', [])
       .filter(({ absolutePath, type }) => {
-        return type === 'FILTER' && absolutePath === curWorkflowPath
+        const resolvedPath = this.resolveArrayForPath(absolutePath, curWorkflowPath)
+        return type === 'FILTER' && resolvedPath && (resolvedPath === curWorkflowPath)
       })
       .reduce((filters, {value, doc, filterByPubField, filterByOwnField}) => {
         const filterValue = filterByPubField
